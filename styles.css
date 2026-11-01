@@ -1,0 +1,215 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #25313d;
+    background: #f0f2f4;
+}
+
+header {
+    background: #31566e;
+    color: white;
+    padding: 24px 20px;
+    text-align: center;
+}
+
+    header h1 {
+        margin: 0 0 6px;
+        font-size: 28px;
+    }
+
+    header p {
+        margin: 0;
+        color: #dce8ef;
+    }
+
+main {
+    max-width: 1150px;
+    margin: 26px auto;
+    padding: 0 18px;
+    display: grid;
+    grid-template-columns: 330px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+section {
+    background: white;
+    border: 1px solid #dce2e6;
+    border-radius: 8px;
+    padding: 22px;
+}
+
+h2 {
+    font-size: 21px;
+    margin: 0 0 18px;
+    color: #31566e;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 9px;
+}
+
+input,
+textarea {
+    font: inherit;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #c7d0d7;
+    border-radius: 5px;
+    color: #25313d;
+}
+
+textarea {
+    resize: vertical;
+}
+
+    input:focus,
+    textarea:focus {
+        outline: 2px solid #8bb6d0;
+        outline-offset: 0;
+    }
+
+.invalid {
+    border-color: #c0392b;
+}
+
+.error-message {
+    color: #c0392b;
+    font-size: 12px;
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
+    border: 0;
+    border-radius: 5px;
+    padding: 9px 13px;
+}
+
+#submit-btn {
+    background: #31566e;
+    color: white;
+    margin-top: 12px;
+}
+
+#char-counter {
+    font-size: 12px;
+    text-align: right;
+    color: #687985;
+}
+
+    #char-counter.warning {
+        color: #a66a00;
+    }
+
+    #char-counter.danger {
+        color: #c0392b;
+        font-weight: bold;
+    }
+
+#tag-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 15px 0 20px;
+}
+
+.tag-btn {
+    background: #e7edf1;
+    color: #31566e;
+    font-size: 13px;
+}
+
+    .tag-btn.active {
+        background: #31566e;
+        color: white;
+    }
+
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 14px;
+}
+
+.note-card {
+    background: #fafbfc;
+    border: 1px solid #d9e0e5;
+    border-radius: 6px;
+    padding: 15px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+    .note-card h3 {
+        margin: 0 0 8px;
+        color: #31566e;
+    }
+
+.note-date {
+    font-size: 12px;
+    color: #657682;
+}
+
+.note-text {
+    white-space: pre-wrap;
+}
+
+.note-tags,
+.note-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 12px;
+}
+
+.note-tag {
+    font-size: 12px;
+    background: #e7edf1;
+    color: #31566e;
+    padding: 5px 8px;
+    border-radius: 4px;
+}
+
+.edit-btn,
+.save-btn {
+    background: #dbe9f1;
+    color: #254b64;
+}
+
+.delete-btn,
+.cancel-btn {
+    background: #f6dfdc;
+    color: #a52d21;
+}
+
+mark {
+    background: #ffe58a;
+}
+
+.empty-message {
+    color: #657682;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+    color: #657682;
+}
+
+@media (max-width: 800px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+}
