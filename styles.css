@@ -208,8 +208,62 @@ footer {
     color: #657682;
 }
 
+.sort-panel {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+    .sort-panel label {
+        margin: 0;
+    }
+
+    .sort-panel select {
+        padding: 9px;
+        border: 1px solid #c7d0d7;
+        border-radius: 5px;
+        font: inherit;
+        background: white;
+        color: #25313d;
+    }
+
+.note-card.selected {
+    border: 2px solid #31566e;
+    background: #eaf3f9;
+}
+
+.select-btn {
+    background: #e7edf1;
+    color: #31566e;
+}
+
+    .select-btn[aria-pressed="true"] {
+        background: #31566e;
+        color: white;
+    }
+
+#notes-list {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+}
+
 @media (max-width: 800px) {
     main {
         grid-template-columns: 1fr;
     }
+}
+
+@media (max-width: 480px) {
+    .sort-panel {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+        .sort-panel select {
+            width: 100%;
+        }
 }
