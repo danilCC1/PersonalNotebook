@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мій нотатник</title>
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,26 +20,43 @@
                 <label for="title">Заголовок</label>
                 <input id="title" type="text" maxlength="100" placeholder="Назва нотатки">
                 <small id="title-error" class="error-message"></small>
+
                 <label for="text">Текст</label>
                 <textarea id="text" rows="6" maxlength="500" placeholder="Напишіть текст..."></textarea>
                 <div id="char-counter">0 / 500 символів</div>
                 <small id="text-error" class="error-message"></small>
+
                 <label for="date">Дата</label>
                 <input id="date" type="date">
                 <small id="date-error" class="error-message"></small>
+
                 <label for="tags">Теги через кому</label>
                 <input id="tags" type="text" placeholder="Навчання, плани">
                 <small id="tags-error" class="error-message"></small>
+
                 <button type="submit" id="submit-btn">Додати нотатку</button>
             </form>
         </section>
+
         <section class="notes-section">
             <h2>Список нотаток</h2>
             <input id="search" type="search" placeholder="Пошук за заголовком або текстом">
             <div id="tag-filters" aria-label="Фільтр за тегами"></div>
-            <div id="notes-list" class="notes-grid"></div>
+
+            <div class="sort-panel">
+                <label for="sort-order">Сортувати нотатки</label>
+                <select id="sort-order">
+                    <option value="date-desc">Спочатку новіші</option>
+                    <option value="date-asc">Спочатку старіші</option>
+                    <option value="title-asc">За назвою (А–Я)</option>
+                    <option value="title-desc">За назвою (Я–А)</option>
+                </select>
+            </div>
+
+            <section id="notes-list" class="notes-grid" aria-label="Нотатки"></section>
         </section>
     </main>
+
     <footer>Лабораторна робота №1 — Персональний нотатник</footer>
     <script src="app.js"></script>
 </body>
