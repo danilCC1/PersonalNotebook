@@ -1,4 +1,3 @@
-
 const STORAGE_KEY = "personalNotebookNotes";
 const MAX_LENGTH = 500;
 
