@@ -48,6 +48,7 @@ class NotebookManager {
 
     search(query) {
         const pattern = new RegExp(escapeRegex(query), "i");
+
         return this.notes.filter(note =>
             pattern.test(note.title) || pattern.test(note.text)
         );
@@ -57,7 +58,9 @@ class NotebookManager {
         if (tag === "") return notes;
 
         return notes.filter(note =>
-            note.tags.some(t => t.toLowerCase() === tag.toLowerCase())
+            note.tags.some(t =>
+                t.toLowerCase() === tag.toLowerCase()
+            )
         );
     }
 
@@ -66,7 +69,9 @@ class NotebookManager {
 
         this.notes.forEach(note => {
             note.tags.forEach(tag => {
-                if (!tags.includes(tag)) tags.push(tag);
+                if (!tags.includes(tag)) {
+                    tags.push(tag);
+                }
             });
         });
 
@@ -111,10 +116,13 @@ function parseTags(value) {
 }
 
 function checkDate(value) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        return false;
+    }
 
     const [year, month, day] = value.split("-").map(Number);
     const d = new Date(0);
+
     d.setFullYear(year, month - 1, day);
 
     return d.getFullYear() === year &&
@@ -137,8 +145,12 @@ function validate(title, text, date, tags) {
         errors.date = "Виберіть правильну дату.";
     }
 
-    if (tags && !/^[\p{L}\p{N}_ -]+(?:\s*,\s*[\p{L}\p{N}_ -]+)*$/u.test(tags)) {
-        errors.tags = "Теги записуйте через кому, без спеціальних символів.";
+    if (
+        tags &&
+        !/^[\p{L}\p{N}_ -]+(?:\s*,\s*[\p{L}\p{N}_ -]+)*$/u.test(tags)
+    ) {
+        errors.tags =
+            "Теги записуйте через кому, без спеціальних символів.";
     }
 
     return errors;
@@ -148,7 +160,10 @@ function showErrors(fields, errors, editForm = null) {
     for (const name of ["title", "text", "date", "tags"]) {
         const message = errors[name] || "";
 
-        fields[name].classList.toggle("invalid", message !== "");
+        fields[name].classList.toggle(
+            "invalid",
+            message !== ""
+        );
 
         const error = editForm
             ? editForm.querySelector(`[data-error="${name}"]`)
@@ -161,14 +176,18 @@ function showErrors(fields, errors, editForm = null) {
 function updateCounter() {
     const length = textInput.value.length;
 
-    counter.textContent = `${length} / ${MAX_LENGTH} символів`;
+    counter.textContent =
+        `${length} / ${MAX_LENGTH} символів`;
 
     counter.classList.toggle(
         "warning",
         length >= 400 && length < 480
     );
 
-    counter.classList.toggle("danger", length >= 480);
+    counter.classList.toggle(
+        "danger",
+        length >= 480
+    );
 }
 
 function highlight(element, value, query) {
@@ -177,16 +196,23 @@ function highlight(element, value, query) {
         return;
     }
 
-    const pattern = new RegExp(escapeRegex(query), "gi");
+    const pattern = new RegExp(
+        escapeRegex(query),
+        "gi"
+    );
+
     let last = 0;
 
     for (const match of value.matchAll(pattern)) {
         element.append(
-            document.createTextNode(value.slice(last, match.index))
+            document.createTextNode(
+                value.slice(last, match.index)
+            )
         );
 
         const mark = document.createElement("mark");
         mark.textContent = match[0];
+
         element.append(mark);
 
         last = match.index + match[0].length;
@@ -229,19 +255,27 @@ function renderNotes() {
 
     switch (sortSelect.value) {
         case "date-asc":
-            notes.sort((a, b) => a.date.localeCompare(b.date));
+            notes.sort((a, b) =>
+                a.date.localeCompare(b.date)
+            );
             break;
 
         case "title-asc":
-            notes.sort((a, b) => a.title.localeCompare(b.title, "uk"));
+            notes.sort((a, b) =>
+                a.title.localeCompare(b.title, "uk")
+            );
             break;
 
         case "title-desc":
-            notes.sort((a, b) => b.title.localeCompare(a.title, "uk"));
+            notes.sort((a, b) =>
+                b.title.localeCompare(a.title, "uk")
+            );
             break;
 
         default:
-            notes.sort((a, b) => b.date.localeCompare(a.date));
+            notes.sort((a, b) =>
+                b.date.localeCompare(a.date)
+            );
     }
 
     if (notes.length === 0) {
@@ -256,6 +290,7 @@ function renderNotes() {
 
     notes.forEach(note => {
         const card = document.createElement("article");
+
         card.className = "note-card";
         card.dataset.id = note.id;
 
@@ -296,7 +331,14 @@ function renderNotes() {
         remove.textContent = "Видалити";
 
         actions.append(edit, remove);
-        card.append(heading, date, text, tags, actions);
+
+        card.append(
+            heading,
+            date,
+            text,
+            tags,
+            actions
+        );
 
         notesList.append(card);
     });
@@ -311,6 +353,7 @@ function startEdit(card, note) {
     card.innerHTML = "";
 
     const editForm = document.createElement("form");
+
     editForm.className = "edit-form";
     editForm.noValidate = true;
 
@@ -330,6 +373,7 @@ function startEdit(card, note) {
 
     for (const name of ["title", "text", "date", "tags"]) {
         const label = document.createElement("label");
+
         label.textContent = labels[name];
 
         const field = document.createElement(
@@ -337,16 +381,28 @@ function startEdit(card, note) {
         );
 
         if (name !== "text") {
-            field.type = name === "date" ? "date" : "text";
+            field.type =
+                name === "date" ? "date" : "text";
         }
 
+        const fieldId = `edit-${note.id}-${name}`;
+
+        field.id = fieldId;
         field.name = name;
         field.value = values[name];
 
-        if (name === "text") field.maxLength = MAX_LENGTH;
-        if (name === "title") field.maxLength = 100;
+        label.htmlFor = fieldId;
+
+        if (name === "text") {
+            field.maxLength = MAX_LENGTH;
+        }
+
+        if (name === "title") {
+            field.maxLength = 100;
+        }
 
         const error = document.createElement("small");
+
         error.className = "error-message";
         error.dataset.error = name;
 
@@ -357,16 +413,19 @@ function startEdit(card, note) {
     actions.className = "note-actions";
 
     const save = document.createElement("button");
+
     save.type = "submit";
     save.className = "save-btn";
     save.textContent = "Зберегти";
 
     const cancel = document.createElement("button");
+
     cancel.type = "button";
     cancel.className = "cancel-btn";
     cancel.textContent = "Скасувати";
 
     actions.append(save, cancel);
+
     editForm.append(actions);
     card.append(editForm);
 }
@@ -386,13 +445,26 @@ form.addEventListener("submit", event => {
     const date = dateInput.value;
     const tags = tagsInput.value.trim();
 
-    const errors = validate(title, text, date, tags);
+    const errors = validate(
+        title,
+        text,
+        date,
+        tags
+    );
+
     showErrors(fields, errors);
 
-    if (Object.keys(errors).length > 0) return;
+    if (Object.keys(errors).length > 0) {
+        return;
+    }
 
     manager.add(
-        new Note(title, text, date, parseTags(tags))
+        new Note(
+            title,
+            text,
+            date,
+            parseTags(tags)
+        )
     );
 
     form.reset();
@@ -407,19 +479,26 @@ searchInput.addEventListener("input", renderNotes);
 sortSelect.addEventListener("change", renderNotes);
 
 tagFilters.addEventListener("click", event => {
-    const button = event.target.closest("button[data-tag]");
+    const button = event.target.closest(
+        "button[data-tag]"
+    );
 
-    if (!button || !tagFilters.contains(button)) return;
+    if (!button || !tagFilters.contains(button)) {
+        return;
+    }
 
     activeTag = button.dataset.tag;
+
     render();
 });
 
 notesList.addEventListener("click", event => {
     const button = event.target.closest("button");
+
     if (!button) return;
 
     const card = button.closest(".note-card");
+
     if (!card) return;
 
     const note = manager.notes.find(
@@ -440,7 +519,10 @@ notesList.addEventListener("click", event => {
         if (confirm(`Видалити нотатку «${note.title}»?`)) {
             manager.remove(note.id);
 
-            if (activeTag && !manager.getTags().includes(activeTag)) {
+            if (
+                activeTag &&
+                !manager.getTags().includes(activeTag)
+            ) {
                 activeTag = "";
             }
 
@@ -450,7 +532,9 @@ notesList.addEventListener("click", event => {
 });
 
 notesList.addEventListener("submit", event => {
-    if (!event.target.classList.contains("edit-form")) return;
+    if (!event.target.classList.contains("edit-form")) {
+        return;
+    }
 
     event.preventDefault();
 
@@ -467,10 +551,18 @@ notesList.addEventListener("submit", event => {
     const date = fields.date.value;
     const tags = fields.tags.value.trim();
 
-    const errors = validate(title, text, date, tags);
+    const errors = validate(
+        title,
+        text,
+        date,
+        tags
+    );
+
     showErrors(fields, errors, editForm);
 
-    if (Object.keys(errors).length > 0) return;
+    if (Object.keys(errors).length > 0) {
+        return;
+    }
 
     manager.edit(
         card.dataset.id,
@@ -480,7 +572,10 @@ notesList.addEventListener("submit", event => {
         parseTags(tags)
     );
 
-    if (activeTag && !manager.getTags().includes(activeTag)) {
+    if (
+        activeTag &&
+        !manager.getTags().includes(activeTag)
+    ) {
         activeTag = "";
     }
 
